@@ -1,8 +1,4 @@
-# 名言Twitter Bot with Clojure
+# 名言 Twitter Bot with Clojure and Firebase
 
-Railsで書いた名言アプリのClojure Reborn.
-
-- 
-- https://github.com/tsu-nera/meigen_rails
-
+ref: https://github.com/tsu-nera/meigen-bot-clj 
 
