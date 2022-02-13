@@ -1,4 +1,7 @@
-(ns meigen-bot.meigen)
+(ns meigen-bot.meigen
+  (:require
+   [clojure.walk :refer [stringify-keys]]
+   [meigen-bot.firebase :refer [db]]))
 
 (def meigens
   [
@@ -333,8 +336,32 @@
    ]
   )
 
+(def fs-coll-meigens (.collection db "meigens"))
+
+(defn add-to-firestore [data]
+  (let [java-map (stringify-keys data)]
+    (.add fs-coll-meigens java-map)))
+
+;; (map add-to-firestore meigens)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (count meigens) ;; => 72
-
 ;; (get meigens 3) ;; => {:content "普通の奴らの上を行け", :author "ポール・グレアム"}
+
+;; (def test-data  {:content "地上に住むすべての人は、まず第一に生を愛さなければならないと思いますよ。"
+;;                  :author  "ドストエフスキー"})
+
+;; (add-to-firestore test-data)
+
+;; (def java-map (java.util.HashMap. test-data))
+;; (def clj-map  (into {} java-map))
+;; (stringify-keys test-data)
+
+;; (def docRef (-> db
+;;                 (.collection "users")
+;;                 (.document "alovlance2")))
+;; (def data {"first" "Ada"
+;;            "last"  "Lovelance"
+;;            "born"  1815})
+;; (def result (. docRef set data))
