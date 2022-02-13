@@ -1,23 +1,55 @@
 (ns meigen-bot.firestore
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [environ.core :refer [env]])
   (:import (com.google.auth.oauth2 GoogleCredentials)
            (com.google.firebase FirebaseApp FirebaseOptions)
            (com.google.firebase.cloud FirestoreClient)
-           ;; com.google.firebase FirebaseApp
-           ;; com.google.firebase FirebaseOptions
            ))
 
-(def credentials (GoogleCredentials/getApplicationDefault))
-(def options (FirebaseOptions/builder))
-(def app (-> options
-             (.setCredentials credentials)
-             (.build)))
+(defn init-firebase [cred-path]
+  (let [service-account (io/input-stream cred-path)
+        credentials     (GoogleCredentials/fromStream service-account)]
+    (-> (FirebaseOptions/builder)
+        (.setCredentials credentials)
+        (.build)
+        (FirebaseApp/initializeApp))))
 
+(def cred-path (env :credentials-path))
 
-(FirebaseApp/initializeApp)
+(init-firebase cred-path)
 
 (def db (FirestoreClient/getFirestore))
 
+;;;;;;;;;;;;;;;;;;;;;;
+;;  Design Journals
+;;;;;;;;;;;;;;;;;;;;;;
+;; firestore read data.
+
+;; (def query (-> db
+;;                (.collection "users")
+;;                (.get)))
+
+;; (System/getenv "GOOGLE_APPLICATION_CREDENTIALS")
+
+;; // asynchronously retrieve all users
+;; ApiFuture<QuerySnapshot> query = db.collection("users").get();
+;; // ...
+;; // query.get() blocks on response
+;; QuerySnapshot querySnapshot = query.get();
+;; List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+;; for (QueryDocumentSnapshot document : documents) {
+;;                                                   System.out.println ("User: " + document.getId())             ;
+;;                                                   System.out.println ("First: " + document.getString("first")) ;
+;;                                                   if                 (document.contains("middle"))             {
+;;                                                                                                                 System.out.println ("Middle: " + document.getString("middle")) ;
+;;                                                                                                                 }
+;;                                                   System.out.println ("Last: " + document.getString("last"))   ;
+;;                                                   System.out.println ("Born: " + document.getLong("born"))     ;
+;;                                                   }
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; firebase write data.
+;;
 ;; https://github.com/googleapis/java-firestore/blob/main/samples/snippets/src/main/java/com/example/firestore/Quickstart.java
 ;;
 ;; DocumentReference docRef = db.collection("users").document("alovelace");
@@ -32,15 +64,15 @@
 ;; // result.get() blocks on response
 ;; System.out.println("Update time : " + result.get().getUpdateTime());
 
-(def docRef (-> db
-                (.collection "users")
-                (.document "alovlance")))
-(def data {"first" "Ada"
-           "last"  "Lovelance"
-           "born"  1815})
-(def result (. docRef set data))
+;; (def docRef (-> db
+;;                 (.collection "users")
+;;                 (.document "alovlance2")))
+;; (def data {"first" "Ada"
+;;            "last"  "Lovelance"
+;;            "born"  1815})
+;; (def result (. docRef set data))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; https://firebase.google.com/docs/admin/setup/
 ;; FirebaseOptions options = FirebaseOptions.builder()

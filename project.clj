@@ -9,6 +9,7 @@
                  [cheshire "5.10.2"]
                  [clj-http "3.12.3"]
                  [jarohen/chime "0.3.3"]
+                 [com.google.auth/google-auth-library-oauth2-http "1.4.0"]
                  [com.google.cloud/google-cloud-firestore "3.0.2"]
                  [com.google.firebase/firebase-admin "8.1.0"]]
   :main meigen-bot.core
