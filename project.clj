@@ -8,9 +8,10 @@
                  [environ "1.2.0"]
                  [cheshire "5.10.2"]
                  [clj-http "3.12.3"]
-                 [jarohen/chime "0.3.3"]]
+                 [jarohen/chime "0.3.3"]
+                 [com.google.cloud/google-cloud-firestore "3.0.2"]
+                 [com.google.firebase/firebase-admin "8.1.0"]]
   :main meigen-bot.core
   :repl-options {:init-ns meigen-bot.core}
-  :min-lein-version "2.0.0"
   :profiles {:uberjar {:aot :all}}
   )
