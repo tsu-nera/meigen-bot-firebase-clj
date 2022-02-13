@@ -1,12 +1,21 @@
 (ns meigen-bot.runner
   (:require
+   [clojure.walk :refer [keywordize-keys]]
    [taoensso.timbre :as log]
    [meigen-bot.twitter.private-client :as private]
-   [meigen-bot.meigen :refer [meigens]]
-   [meigen-bot.firebase :refer [db]]))
+   [meigen-bot.meigen :refer [meigens, fs-coll-meigens]]))
 
+(defn get-meigens []
+  (let [query (.get fs-coll-meigens)]
+    (->>
+     (.getDocuments @query)
+     (map #(.getData %)))))
 
-(defn pick-random [] (rand-nth meigens))
+(defn pick-random []
+  (let [meigens (get-meigens)]
+    (->> (rand-nth meigens)
+         (into {})
+         (keywordize-keys))))
 
 (defn make-status [data]
   (let [{content :content, author :author} data]
@@ -29,6 +38,30 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Design Journals
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (pick-random)
+;; (make-status (pick-random))
+;; (tweet-random)
+
+;; retrive meigen from firestore
+
+;; どうもrandom pickをfirestoreでやらせようとしたとき
+;; IDを自動生成していると難しいな
+;; はじめにmeigensのサイズを取得してクライアント側で乱数生成してrandom pickする
+;;
+;; 面倒だから全部名言をローカルに取得するかwww
+
+;; (def query (-> fs-coll-meigens
+;;                (.get)))
+;; ;; (type query)
+
+;; (def query-result @query)
+;; (def docs (.getDocuments query-result))
+
+;; (def doc (first docs))
+;; (.getData doc)
+;; (def data (map #(.getData %) docs))
+
 ;; firestore read data.
 
 ;; (def doc (-> db
