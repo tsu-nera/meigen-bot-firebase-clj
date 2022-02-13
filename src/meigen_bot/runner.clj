@@ -3,6 +3,7 @@
    [clojure.walk :refer [keywordize-keys]]
    [taoensso.timbre :as log]
    [meigen-bot.twitter.private-client :as private]
+   [meigen-bot.firebase :refer [db]]
    [meigen-bot.meigen :refer [meigens, fs-coll-meigens]]))
 
 (defn get-meigens []
@@ -21,15 +22,32 @@
   (let [{content :content, author :author} data]
     (str content "\n\n" author)))
 
+(defn make-fs-tweet [status]
+  (let [created_at (:created_at status)
+        user       (:user status)]
+    {"status_id"  (:id_str status)
+     "user_id"    (:id_str user)
+     "text"       (:text status)
+     "created_at" created_at
+     "updated_at" created_at}))
+
+(defn tweet [status]
+  (let [result    (private/update-status status)
+        data      (make-fs-tweet result)
+        status_id (:id_str result)]
+    (try
+      (-> db
+          (.collection "tweets")
+          (.document status_id)
+          (.set data))
+      (log/info (str "post tweet completed. status_id=" status_id))
+      (catch Exception e (log/error "post tweet Failed." (.getMessage e))))))
+
 (defn tweet-random []
   (let [data                               (pick-random)
         {content :content, author :author} data
         status                             (make-status data)]
-    (try
-      (private/update-status status)
-      (log/info "post tweet completed.")
-      (log/debug (str content " - " author))
-      (catch Exception e (log/error "post tweet Failed." (.getMessage e))))))
+    (tweet status)))
 
 (defn -main [& args]
   (tweet-random)
@@ -38,6 +56,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Design Journals
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; (tweet "hogehoge")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Tweet Data を firestoreへ保存 status_idをidにする
+
+;; (def status (private/update-status "hoge"))
+;; (def status_id (:id_str status))
+
+;; (def doc-ref (-> db
+;;                  (.collection "tweets")
+;;                  (.document status_id)))
+;; (def result (. docRef set data))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (pick-random)
 ;; (make-status (pick-random))
