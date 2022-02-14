@@ -1,7 +1,7 @@
 (ns meigen-bot.meigen
   (:require
    [clojure.walk :refer [stringify-keys]]
-   [meigen-bot.firebase :refer [db]]))
+   [meigen-bot.firebase :refer [get-fs]]))
 
 (def meigens
   [
@@ -336,15 +336,16 @@
    ]
   )
 
-(def fs-coll-meigens (.collection db "meigens"))
-
 (defn add-to-firestore [data]
-  (let [java-map (stringify-keys data)]
+  (let [fs-coll-meigens (.collection (get-fs) "meigens")
+        java-map        (stringify-keys data)]
     (.add fs-coll-meigens java-map)))
 
 ;; (map add-to-firestore meigens)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (get-fs)
 
 ;; (count meigens) ;; => 72
 ;; (get meigens 3) ;; => {:content "普通の奴らの上を行け", :author "ポール・グレアム"}

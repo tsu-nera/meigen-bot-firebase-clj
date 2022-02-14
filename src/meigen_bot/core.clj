@@ -1,8 +1,10 @@
 (ns meigen-bot.core
+  (:gen-class)
   (:import (java.time Instant Duration))
   (:require
    [taoensso.timbre :as log]
    [meigen-bot.runner :as runner]
+   [meigen-bot.firebase :refer [init-firebase-app!]]
    [chime.core :as chime]))
 
 
@@ -10,8 +12,10 @@
                                      :locale   (java.util.Locale. "ja_JP")
                                      :tiemzone (java.util.TimeZone/getTimeZone "Asia/Tokyo")}})
 
+(log/merge-config! timbre-config)
+(init-firebase-app!)
+
 (defn -main [& args]
-  (log/merge-config! timbre-config)
   (println "======================================")
   (println "Started up Twitter Bot.")
   (chime/chime-at (chime/periodic-seq

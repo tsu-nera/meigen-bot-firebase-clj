@@ -6,19 +6,22 @@
            (com.google.firebase.cloud FirestoreClient)
            ))
 
-(defn init-firebase [cred-path]
-  (let [service-account (io/input-stream cred-path)
+(defn init-firebase-app! []
+  (let [cred-path       (env :credentials-path)
+        service-account (io/input-stream cred-path)
         credentials     (GoogleCredentials/fromStream service-account)]
     (-> (FirebaseOptions/builder)
         (.setCredentials credentials)
         (.build)
         (FirebaseApp/initializeApp))))
 
-(def cred-path (env :credentials-path))
+(defn get-fs []
+  (FirestoreClient/getFirestore))
 
-(init-firebase cred-path)
+;; (init-firebase)
+;; (init-firebase-app!)
 
-(def db (FirestoreClient/getFirestore))
+;; (def db (FirestoreClient/getFirestore))
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;;  Design Journals

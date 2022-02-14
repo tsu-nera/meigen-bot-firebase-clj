@@ -3,11 +3,13 @@
    [clojure.walk :refer [keywordize-keys]]
    [taoensso.timbre :as log]
    [meigen-bot.twitter.private-client :as private]
-   [meigen-bot.firebase :refer [db]]
-   [meigen-bot.meigen :refer [meigens, fs-coll-meigens]]))
+   [meigen-bot.firebase :refer [get-fs]]
+   [meigen-bot.meigen :refer [meigens]]
+   ))
 
 (defn get-meigens []
-  (let [query (.get fs-coll-meigens)]
+  (let [coll_meigens (.collection (get-fs) "meigens")
+        query        (.get coll_meigens)]
     (->>
      (.getDocuments @query)
      (map #(.getData %)))))
@@ -36,7 +38,7 @@
         data      (make-fs-tweet result)
         status_id (:id_str result)]
     (try
-      (-> db
+      (-> (get-fs)
           (.collection "tweets")
           (.document status_id)
           (.set data))
