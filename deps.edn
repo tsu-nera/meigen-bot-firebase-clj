@@ -1,4 +1,6 @@
-{:paths ["src/clj"]
+{
+ :paths ["src/main/clojure"]
+
  :deps
  {org.clojure/clojure {:mvn/version "1.10.3"}
   environ/environ     {:mvn/version "1.2.0"}
@@ -12,4 +14,10 @@
   com.google.cloud/google-cloud-firestore            {:mvn/version "3.0.2"}
   com.google.firebase/firebase-admin                 {:mvn/version "8.1.0"}
   com.google.cloud.functions/functions-framework-api {:mvn/version "1.0.4"}}
- :aliases {:run {:main-opts ["-m" "meigen-bot.core"]}}}
+
+ :aliases {:run   {:main-opts ["-m" "meigen-bot.core"]}
+           :build {:deps       {io.github.clojure/tools.build
+                                {:git/tag "v0.7.5" :git/sha "34727f7"}}
+                   :ns-default build}
+           }
+ }

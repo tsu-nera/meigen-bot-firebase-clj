@@ -4,7 +4,7 @@
 profiles.clj
 # pom.xml
 pom.xml.asc
-*.jar
+# *.jar
 *.class
 /.lein-*
 /.nrepl-port
@@ -12,4 +12,4 @@ pom.xml.asc
 .hgignore
 .hg/
 firebase-adminsdk.json
-/.cpcache/
+/.cpcache
