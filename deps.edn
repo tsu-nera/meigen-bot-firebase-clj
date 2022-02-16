@@ -1,0 +1,15 @@
+{:paths ["src/clj"]
+ :deps
+ {org.clojure/clojure {:mvn/version "1.10.3"}
+  environ/environ     {:mvn/version "1.2.0"}
+  cheshire/cheshire   {:mvn/version "5.10.2"}
+  clj-http/clj-http   {:mvn/version "3.12.3"}
+  jarohen/chime       {:mvn/version "0.3.3"}
+  com.taoensso/timbre {:mvn/version "5.1.2"}
+
+  ;; Goole Cloud
+  com.google.auth/google-auth-library-oauth2-http    {:mvn/version "1.4.0"}
+  com.google.cloud/google-cloud-firestore            {:mvn/version "3.0.2"}
+  com.google.firebase/firebase-admin                 {:mvn/version "8.1.0"}
+  com.google.cloud.functions/functions-framework-api {:mvn/version "1.0.4"}}
+ :aliases {:run {:main-opts ["-m" "meigen-bot.core"]}}}
