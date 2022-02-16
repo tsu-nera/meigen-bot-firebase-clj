@@ -1,5 +1,5 @@
 {
- :paths ["src/main/clojure"]
+ :paths ["src/main/clojure" "src/main/java"]
 
  :deps
  {org.clojure/clojure {:mvn/version "1.10.3"}
@@ -8,6 +8,10 @@
   clj-http/clj-http   {:mvn/version "3.12.3"}
   jarohen/chime       {:mvn/version "0.3.3"}
   com.taoensso/timbre {:mvn/version "5.1.2"}
+
+  nl.epij/google-cloud-functions-ring-adapter {:mvn/version "0.1.0"}
+  ring/ring-json                              {:mvn/version "0.5.0"}
+  ring/ring-devel                             {:mvn/version "1.8.2"}
 
   ;; Goole Cloud
   com.google.auth/google-auth-library-oauth2-http    {:mvn/version "1.4.0"}
@@ -19,5 +23,14 @@
            :build {:deps       {io.github.clojure/tools.build
                                 {:git/tag "v0.7.5" :git/sha "34727f7"}}
                    :ns-default build}
+           :assemble
+           {:extra-deps {nl.epij.gcf/deploy {:git/url   "https://github.com/pepijn/google-cloud-functions-clojure"
+                                             :sha       "e0f49db974a8f97e1459efd16c0edfb3030a6115"
+                                             :deps/root "deploy"}}
+            :exec-fn    nl.epij.gcf.deploy/assemble-jar!
+            :exec-args  {:nl.epij.gcf/entrypoint   JsonHttpEcho
+                         :nl.epij.gcf/java-paths   ["src/main/java"]
+                         :nl.epij.gcf/compile-path "target/classes"
+                         :nl.epij.gcf/jar-path     "target/artifacts/application.jar"}}
            }
  }

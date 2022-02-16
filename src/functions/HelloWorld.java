@@ -2,6 +2,8 @@
 // https://cloud.google.com/functions/docs/first-java
 package functions;
 
+import clojure.java.api.Clojure;
+import clojure.lang.IFn;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;

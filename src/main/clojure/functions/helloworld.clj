@@ -1,10 +1,6 @@
 (ns functions.helloworld
   (:gen-class
-   :name functions.ClojureHelloWorld
-   :init init
-   :state state
-   :constructors {[] []}
-   :main false
+   :name functions.HelloWorld
    :implements [com.google.cloud.functions.HttpFunction]
    :exposes-methods [service]
    )
@@ -25,6 +21,9 @@
   ;; (let [writer (.getWriter response)]
   ;;   (.write writer "Hello World!")))
   (println request))
+
+;; (defn -main [& args]
+;;   (println "Hello Clojure"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -52,6 +52,7 @@
           <sourceDirectories>
             <sourceDirectory>src/main/clojure</sourceDirectory>
           </sourceDirectories>
+          <!-- <temporaryOutputDirectory>true</temporaryOutputDirectory> -->
         </configuration>
         <executions>
           <execution>
