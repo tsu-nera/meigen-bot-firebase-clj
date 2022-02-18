@@ -1,46 +1,23 @@
 (ns functions.helloworld
-  (:gen-class
-   :name functions.HelloWorld
-   :implements [com.google.cloud.functions.HttpFunction]
-   :exposes-methods [service]
-   )
-  (:import
-   (com.google.cloud.functions HttpFunction)
-   ;; (com.google.cloud.functions HttpRequest HttpResponse)
-   ;; (java.io BufferedWriter IOException)
-   ))
+  (:require
+   [cheshire.core :as json]
+   [ring.middleware.json :as m.json]
+   [ring.middleware.lint :as m.lint]))
 
-;; (def ClojureHelloWorld
-;;   (proxy [HttpFunction] []
-;;     (service [request response]
-;;       ;; (let [writer (.getWriter response)]
-;;       ;;   (.write writer "Hello World!")))
-;;       (println "Hello, Clojure"))))
 
-(defn service [request response]
-  ;; (let [writer (.getWriter response)]
-  ;;   (.write writer "Hello World!")))
-  (println request))
+(defn handler
+  [req]
+  (prn req)
+  (let [body (try (json/generate-string req {:pretty true})
+                  (catch Exception _e
+                    (json/generate-string (dissoc req :body) {:pretty true})))]
+    (println "Hello, World")
+    {:status  200
+     :headers {"Content-Type" "application/json"}
+     :body    (str body "\n")}))
 
-;; (defn -main [& args]
-;;   (println "Hello Clojure"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; package functions;
-
-;; import com.google.cloud.functions.HttpFunction;
-;; import com.google.cloud.functions.HttpRequest;
-;; import com.google.cloud.functions.HttpResponse;
-;; import java.io.BufferedWriter;
-;; import java.io.IOException;
-
-;; public class HelloWorld implements HttpFunction {
-;; // Simple function to return "Hello World"
-;; @Override
-;; public void service(HttpRequest request, HttpResponse response)
-;; throws IOException {
-;;                     BufferedWriter writer           = response.getWriter () ;
-;;                     writer.write   ("Hello World!") ;
-;;                     }
-;; }
+(def app
+  (-> handler
+      m.json/wrap-json-body
+      m.lint/wrap-lint))
