@@ -21,17 +21,8 @@
 
  :aliases {:run   {:main-opts ["-m" "meigen-bot.core"]}
            :build {:deps       {io.github.clojure/tools.build
-                                {:git/tag "v0.7.5" :git/sha "34727f7"}}
-                   :ns-default build}
-           :assemble
-           {:extra-deps {nl.epij.gcf/deploy {:git/url   "https://github.com/pepijn/google-cloud-functions-clojure"
-                                             :sha       "e0f49db974a8f97e1459efd16c0edfb3030a6115"
-                                             :deps/root "deploy"}}
-            :exec-fn    nl.epij.gcf.deploy/assemble-jar!
-            :exec-args  {;; :nl.epij.gcf/entrypoint   JsonHttpEcho
-                         ;; -> clj -X:assemble :nl.epij.gcf/entrypoint JsonHttpEcho
-                         :nl.epij.gcf/java-paths   ["src/main/java"]
-                         :nl.epij.gcf/compile-path "target/classes"
-                         :nl.epij.gcf/jar-path     "target/artifacts/application.jar"}}
+                                {:git/tag "v0.7.7" :git/sha "1474ad6"}}
+                   :ns-default build
+                   }
            }
  }
