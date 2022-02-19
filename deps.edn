@@ -21,31 +21,18 @@
   ring/ring-json                                     {:mvn/version "0.5.0"}
   ring/ring-devel                                    {:mvn/version "1.8.2"}}
 
- :aliases {:run   {:main-opts ["-m" "meigen-bot.core"]}
-           :build {:deps       {io.github.clojure/tools.build
-                                {:git/tag "v0.7.7" :git/sha "1474ad6"}}
-                   :ns-default build}
-           :assemble
-           {:extra-deps {nl.epij.gcf/deploy
-                         {:git/url   "https://github.com/pepijn/google-cloud-functions-clojure"
-                          :sha       "58a358d18e5305498bfaa0ace2696e4f00ca4159"
-                          :deps/root "deploy"}}
-            :exec-fn    nl.epij.gcf.deploy/assemble-jar!
-            :exec-args  {;; :nl.epij.gcf/entrypoint   JsonHttpEcho
-                         ;; -> clj -X:assemble :nl.epij.gcf/entrypoint HelloWorld
-                         :nl.epij.gcf/java-paths   ["src/main/java"]
-                         :nl.epij.gcf/compile-path "target/classes"
-                         :nl.epij.gcf/jar-path     "target/artifacts/application.jar"}}
-           :run-server
-           {:extra-deps {nl.epij.gcf/deploy
-                         {:git/url   "https://github.com/pepijn/google-cloud-functions-clojure"
-                          :sha       "58a358d18e5305498bfaa0ace2696e4f00ca4159"
-                          :deps/root "deploy"}}
-            :exec-fn    nl.epij.gcf.deploy/run-server!
-            :exec-args  {;; :nl.epij.gcf/entrypoint   JsonHttpEcho
-                         ;; -> clj -X:run-server :nl.epij.gcf/entrypoint HelloWorld
-                         :nl.epij.gcf/java-paths   ["src/main/java"]
-                         :nl.epij.gcf/compile-path "target/classes"
-                         :nl.epij.gcf/jar-path     "target/artifacts/application.jar"}}
-           }
+ :aliases
+ {:run   {:main-opts ["-m" "meigen-bot.core"]}
+  :build {:deps       {io.github.clojure/tools.build
+                       {:git/tag "v0.7.7" :git/sha "1474ad6"}
+                       org.clojure/java.classpath {:mvn/version "1.0.0"}
+                       badigeon/badigeon          {:mvn/version "1.4"}
+                       babashka/process           {:mvn/version "0.0.2"}
+                       }
+          :ns-default build}
+  ;; ローカル実行はひとまずこれでいく, そのうちコマンド定義.
+  ;; java -jar opt/java-function-invoker-1.1.0 \
+  ;; --classpath target/artifacts/application.jar:target/classes \
+  ;; --target       HelloWorld
+  }
  }

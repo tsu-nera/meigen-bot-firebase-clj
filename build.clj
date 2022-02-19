@@ -1,5 +1,9 @@
 (ns build
-  (:require [clojure.tools.build.api :as b]))
+  (:require [clojure.tools.build.api :as b]
+            [babashka.process :as process]
+            [badigeon.classpath :as classpath]
+            [badigeon.javac :as javac]
+            ))
 
 (def lib 'tsu-nera/meingen-bot-firebase)
 (def version (format "0.1.%s" (b/git-count-revs nil)))
@@ -45,11 +49,11 @@
 (defn uber [_]
   (clean nil)
   (compile-java nil)
-  ;; (b/copy-dir {:src-dirs   src-clj
-  ;;              :target-dir class-dir})
-  ;; (b/compile-clj {:basis     basis
-  ;;                 :src-dirs  src-clj
-  ;;                 :class-dir class-dir})
+  (b/copy-dir {:src-dirs   src-clj
+               :target-dir class-dir})
+  (b/compile-clj {:basis     basis
+                  :src-dirs  src-clj
+                  :class-dir class-dir})
   (b/uber {:class-dir class-dir
            :uber-file uber-file
            :basis     basis
