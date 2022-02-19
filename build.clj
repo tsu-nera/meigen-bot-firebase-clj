@@ -8,7 +8,7 @@
 (def class-dir (str target-dir "/" "classes"))
 (def artifacts-dir (str target-dir "/" "artifacts"))
 (def jar-file (format "%s/%s-%s-application.jar" artifacts-dir (name lib) version))
-(def uber-file (format "%s/%s-%s-standalone.jar" artifacts-dir (name lib) version))
+(def uber-file (format "%s/application.jar" artifacts-dir))
 
 (def src-clj ["src/main/clojure"])
 (def src-java ["src/main/java"])
