@@ -2,10 +2,10 @@
 
 Twitter Botを Google Cloud FunctionsとGoogle Cloud Firestoreで作成, 言語はClojure.
 
-Clojureの勉強と技術検証を兼ねたPoCのため雑なコードです.
+Clojureの勉強とFirebaseの技術検証を兼ねたPoCのため雑なコードです.
 
 based on: https://github.com/tsu-nera/meigen-bot-clj 
 
 ## More Info
 
-[[https://futurismo.biz/meigen-twiter-bot-clojure-firebase-2022/][Clojure/Firebaseで努力の名言Serverless Twitter Bot作成した | Futurismo]]
+[Clojure/Firebaseで努力の名言Serverless Twitter Bot作成した \| Futurismo](https://futurismo.biz/meigen-twiter-bot-clojure-firebase-2022/)
