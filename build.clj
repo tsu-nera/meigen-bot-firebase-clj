@@ -1,9 +1,5 @@
 (ns build
-  (:require [clojure.tools.build.api :as b]
-            [babashka.process :as process]
-            [badigeon.classpath :as classpath]
-            [badigeon.javac :as javac]
-            ))
+  (:require [clojure.tools.build.api :as b]))
 
 (def lib 'tsu-nera/meingen-bot-firebase)
 (def version (format "0.1.%s" (b/git-count-revs nil)))
@@ -30,7 +26,7 @@
   (b/javac {:src-dirs   src-java
             :class-dir  class-dir
             :basis      basis
-            :javac-opts ["-source" "11" "-target" "11" "-Xlint:all"]
+            :javac-opts ["-source" "11" "-target" "11"]
             }))
 
 ;; clj -T:build jar
@@ -57,5 +53,4 @@
   (b/uber {:class-dir class-dir
            :uber-file uber-file
            :basis     basis
-           ;; :main      'functions.helloworld
            }))
