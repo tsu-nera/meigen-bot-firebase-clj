@@ -15,6 +15,16 @@
         (.build)
         (FirebaseApp/initializeApp))))
 
+(defn init-firebase-app-prod! []
+  (let [project-id  (env :project-id)
+        credentials (GoogleCredentials/getApplicationDefault)]
+    (-> (FirebaseOptions/builder)
+        (.setCredentials credentials)
+        (.setProjectId project-id)
+        (.build)
+        (FirebaseApp/initializeApp))))
+
+
 (defn get-fs []
   (FirestoreClient/getFirestore))
 

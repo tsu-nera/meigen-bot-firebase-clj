@@ -24,15 +24,5 @@
  :aliases
  {:run   {:main-opts ["-m" "meigen-bot.core"]}
   :build {:deps       {io.github.clojure/tools.build {:git/tag "v0.7.7" :git/sha "1474ad6"}}
-          :ns-default build}
-  ;; ローカル実行はひとまずこれでいく, そのうちコマンド定義.
-  ;; detail:
-  ;; https://github.com/GoogleCloudPlatform/functions-framework-java#running-the-functions-framework-directly
-  ;;
-  ;; > $ clj -T:build uber
-  ;; > $ java -jar opt/java-function-invoker-1.1.0 \
-  ;; --classpath target/artifacts/application.jar:target/classes \
-  ;; --target HelloWorld
-  ;;
-  }
+          :ns-default build}}
  }

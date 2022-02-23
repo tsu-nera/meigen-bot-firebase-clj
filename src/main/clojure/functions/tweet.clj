@@ -6,15 +6,17 @@
    [ring.middleware.params :refer [wrap-params]]
    [ring.util.response :as response]
    [ring.middleware.params :refer [wrap-params]]
-   [meigen-bot.twitter.private-client :as private]
+   [meigen-bot.runner :as runner]
+   [meigen-bot.firebase :refer [init-firebase-app-prod!]]
    ))
 
 
 (defn handler [req]
-  (prn req)
-  (let [params (:params req)
-        status (:status params)
-        tweet  (private/update-status status)]
+  ;; (prn req)
+  (init-firebase-app-prod!)
+  (let [;; params (:params req)
+        ;; status (:status params)
+        tweet (runner/tweet-random)]
     (response/response "OK")))
 
 
